@@ -2,7 +2,6 @@
 
 import { useRef, useState } from "react"
 import { Button } from "@/components/ui/button"
-import { useToast } from "@/hooks/use-toast"
 import { useSheetMusicStore } from "@/lib/store"
 import { Progress } from "@/components/ui/progress"
 import { Alert, AlertDescription } from "@/components/ui/alert"
@@ -22,7 +21,6 @@ export function AudioAnalyzer({ audioFile }: AudioAnalyzerProps) {
   const [quotaError, setQuotaError] = useState(false)
   const [modelError, setModelError] = useState(false)
   const canvasRef = useRef<HTMLCanvasElement>(null)
-  const { toast } = useToast()
   const { setSheetMusic, setLoading } = useSheetMusicStore()
 
   const testApiKey = async () => {
@@ -32,29 +30,15 @@ export function AudioAnalyzer({ audioFile }: AudioAnalyzerProps) {
       const result = await response.json()
 
       if (result.success) {
-        toast({
-          title: "✅ Gemini API Key Working!",
-          description: `Your Google AI API key is working with ${result.workingModel}`,
-        })
+        console.log("API Test Result:", result)
         setApiKeyError(false)
         setModelError(false)
       } else {
-        toast({
-          title: "❌ API Key Test Failed",
-          description: result.error || "API key test failed",
-          variant: "destructive",
-        })
+        console.error("API key test failed", result)
         setApiKeyError(true)
       }
-
-      console.log("API Test Result:", result)
     } catch (error) {
       console.error("API test error:", error)
-      toast({
-        title: "❌ API Test Error",
-        description: "Failed to test API key",
-        variant: "destructive",
-      })
     } finally {
       setIsAnalyzing(false)
     }
@@ -152,48 +136,12 @@ export function AudioAnalyzer({ audioFile }: AudioAnalyzerProps) {
       setSheetMusic(sheetMusicData)
       setProgress(100)
 
-      // Download raw API response as JSON
-      const rawResponseData = {
-        timestamp: new Date().toISOString(),
-        audioFile: {
-          name: audioFile.name,
-          size: audioFile.size,
-          type: audioFile.type,
-        },
-        geminiApiResponse: result,
-        processingInfo: {
-          modelUsed: result.modelUsed,
-          sampleRate: audioBuffer.sampleRate,
-          duration: audioBuffer.duration,
-        }
-      }
-
-      // Create and download JSON file
-      const jsonString = JSON.stringify(rawResponseData, null, 2)
-      const blob = new Blob([jsonString], { type: 'application/json' })
-      const url = URL.createObjectURL(blob)
-      const a = document.createElement('a')
-      a.href = url
-      a.download = `gemini-api-response-${audioFile.name.replace(/\.[^/.]+$/, '')}-${new Date().toISOString().slice(0, 19).replace(/:/g, '-')}.json`
-      document.body.appendChild(a)
-      a.click()
-      document.body.removeChild(a)
-      URL.revokeObjectURL(url)
-
-      toast({
-        title: "🎼 Gemini 2.5 Pro Analysis Complete!",
-        description: `Advanced AI detected ${result.notes.length} musical notes using ${result.modelUsed}. Raw API response downloaded as JSON.`,
-      })
+      console.log("🎼 Gemini 2.5 Pro Analysis Complete!")
 
       // Close audio context
       audioContext.close()
     } catch (error) {
       console.error("Error analyzing audio:", error)
-      toast({
-        title: "Analysis failed",
-        description: error instanceof Error ? error.message : "There was an error analyzing your audio file",
-        variant: "destructive",
-      })
     } finally {
       setIsAnalyzing(false)
       setLoading(false)
@@ -323,42 +271,8 @@ export function AudioAnalyzer({ audioFile }: AudioAnalyzerProps) {
             </Alert>
           )}
 
-          <Alert>
-            <Crown className="h-4 w-4" />
-            <AlertDescription>
-              <div className="flex items-center gap-2 mb-2">
-                <strong>Google Gemini 2.5 Pro Preview Musical Analysis</strong>
-                <Badge variant="default" className="bg-gradient-to-r from-purple-500 to-blue-500">
-                  <Crown className="h-3 w-3 mr-1" />
-                  Gemini 2.5 Pro
-                </Badge>
-              </div>
-              <p>
-                Using Google's most advanced Gemini 2.5 Pro Preview model for state-of-the-art musical transcription.
-                This flagship model offers the highest accuracy, deepest musical understanding, and most sophisticated
-                audio analysis capabilities available.
-              </p>
-            </AlertDescription>
-          </Alert>
-
           <div className="p-4 border rounded-lg">
-            <h3 className="font-semibold mb-4 flex items-center gap-2">
-              <Sparkles className="h-5 w-5 text-purple-500" />
-              Advanced AI Musical Analysis
-              <Badge variant="outline" className="ml-2 border-purple-200">
-                <Crown className="h-3 w-3 mr-1" />
-                Gemini 2.5 Pro
-              </Badge>
-            </h3>
-
             <div className="space-y-4">
-              {/* Add API test button */}
-              <div className="flex gap-2">
-                <Button variant="outline" size="sm" onClick={testApiKey} disabled={isAnalyzing} className="flex-1">
-                  {isAnalyzing ? "Testing..." : "🔑 Test Gemini 2.5 Pro API"}
-                </Button>
-              </div>
-
               <div className="grid grid-cols-2 gap-4 text-sm">
                 <div>
                   <strong>File:</strong> {audioFile.name}
@@ -486,39 +400,6 @@ export function AudioAnalyzer({ audioFile }: AudioAnalyzerProps) {
               </p>
             </div>
           )}
-
-          <div className="p-4 bg-gradient-to-br from-purple-50 to-blue-50 dark:from-purple-950/20 dark:to-blue-950/20 rounded-lg border border-purple-200 dark:border-purple-800">
-            <h4 className="font-semibold text-purple-900 dark:text-purple-100 mb-2 flex items-center gap-2">
-              <Crown className="h-4 w-4" />
-              Gemini 2.5 Pro Advantages
-            </h4>
-            <div className="text-sm text-purple-800 dark:text-purple-200 space-y-1">
-              <div className="flex items-center gap-2">
-                <Crown className="h-3 w-3" />
-                <span>
-                  <strong>Latest Preview Model:</strong> Uses the most advanced Gemini 2.5 Pro Preview version
-                </span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Sparkles className="h-3 w-3" />
-                <span>
-                  <strong>Advanced Harmonic Analysis:</strong> Detects complex chord progressions and voice leading
-                </span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Zap className="h-3 w-3" />
-                <span>
-                  <strong>Professional-Grade Accuracy:</strong> Highest precision for complex musical arrangements
-                </span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Info className="h-3 w-3" />
-                <span>
-                  <strong>Intelligent Fallback:</strong> Automatically uses best available model if 2.5 Pro unavailable
-                </span>
-              </div>
-            </div>
-          </div>
         </div>
       )}
     </div>

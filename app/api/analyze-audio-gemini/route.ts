@@ -82,7 +82,7 @@ export async function POST(request: NextRequest) {
     const mimeType = audioFile.type || "audio/mpeg"
 
     // Enhanced prompt optimized for Gemini 2.5 Pro capabilities
-    const prompt = `You are a professional music transcription AI using Gemini 2.5 Pro's advanced audio analysis capabilities. Analyze this audio file and extract musical notes for sheet music transcription with the highest possible accuracy.
+    const prompt = `You are a professional music transcription AI using Gemini 2.5 Pro's advanced audio analysis capabilities. Analyze this audio file and extract musical notes for sheet music transcription with the highest possible accuracy. Assume you have perfect pitch and are able to hear the notes.
 
 CRITICAL: Return ONLY valid JSON in this exact format (no markdown, no explanations):
 {
@@ -260,7 +260,7 @@ Analyze the audio carefully and return only the JSON response with your best mus
         confidence: Number(note.confidence) || 0.8,
         velocity: Number(note.velocity) || 80,
       }))
-      .sort((a, b) => a.time - b.time) // Sort by time
+      .sort((a: any, b: any) => a.time - b.time) // Sort by time
       .slice(0, 150) // Limit for performance
 
     console.log(`Gemini analysis complete: ${cleanedData.notes.length} high-confidence notes detected`)
