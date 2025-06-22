@@ -710,7 +710,7 @@ export function SheetMusicDisplay() {
     <div className="space-y-4">
       {/* Buttons moved to top */}
       <div className="flex flex-wrap gap-2">
-        <Button variant="outline" onClick={handlePlayback} disabled={!sheetMusic || isLoading} className="flex-1">
+        <Button variant="outline" onClick={handlePlayback} disabled={!sheetMusic || isLoading} className="flex-1 btn-secondary-glass">
           {isPlaying ? (
             <>
               <Pause className="mr-2 h-4 w-4" />
@@ -724,12 +724,12 @@ export function SheetMusicDisplay() {
           )}
         </Button>
 
-        <Button variant="outline" onClick={handleDownload} disabled={!sheetMusic || isLoading} className="flex-1">
+        <Button variant="outline" onClick={handleDownload} disabled={!sheetMusic || isLoading} className="flex-1 btn-secondary-glass">
           <Download className="mr-2 h-4 w-4" />
           Download Page
         </Button>
 
-        <Button variant="outline" onClick={handleReset} disabled={!sheetMusic || isLoading} className="flex-1">
+        <Button variant="outline" onClick={handleReset} disabled={!sheetMusic || isLoading} className="flex-1 btn-secondary-glass">
           <RotateCcw className="mr-2 h-4 w-4" />
           Reset
         </Button>

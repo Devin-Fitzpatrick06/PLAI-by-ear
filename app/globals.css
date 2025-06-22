@@ -110,4 +110,76 @@ body {
     border: 1px solid #333333 !important;
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 1px 3px rgba(0, 0, 0, 0.3) !important;
   }
+  
+  /* Liquid Glass Effect for Panels */
+  .upload-panel,
+  .sheet-music-panel {
+    background-color: rgba(35, 35, 35, 0.6) !important;
+    backdrop-filter: blur(25px) !important;
+    border-radius: 20px !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  }
+  
+  /* Waveform Player Glass Effect */
+  .waveform-player {
+    background-color: rgba(40, 40, 40, 0.7) !important;
+    backdrop-filter: blur(20px) !important;
+    border-radius: 16px !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  }
+  
+  /* Primary Analyze Button - Apple Style */
+  .btn-analyze {
+    background: linear-gradient(to bottom, #FFFFFF, #EFEFEF) !important;
+    color: #000000 !important;
+    border: none !important;
+    border-radius: 25px !important;
+    padding: 12px 24px !important;
+    font-weight: 600 !important;
+    transition: all 0.3s ease !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+  }
+  
+  .btn-analyze:hover {
+    background: linear-gradient(to bottom, #F8F8F8, #E8E8E8) !important;
+    box-shadow: 0 4px 16px rgba(255, 255, 255, 0.2), 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+    transform: translateY(-1px) !important;
+  }
+  
+  /* Secondary Glassy Buttons */
+  .btn-secondary-glass {
+    background-color: rgba(120, 120, 128, 0.25) !important;
+    color: rgba(255, 255, 255, 0.9) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: 20px !important;
+    backdrop-filter: blur(10px) !important;
+    transition: all 0.3s ease !important;
+  }
+  
+  .btn-secondary-glass:hover {
+    background-color: rgba(120, 120, 128, 0.4) !important;
+    border-color: rgba(255, 255, 255, 0.2) !important;
+    transform: translateY(-1px) !important;
+  }
+  
+  /* File Upload Indicator - Green Glow */
+  .file-uploaded {
+    box-shadow: 0 0 20px rgba(34, 197, 94, 0.3) !important;
+    border: 1px solid rgba(34, 197, 94, 0.2) !important;
+  }
+  
+  /* Typography Improvements */
+  body {
+    font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+  }
+  
+  .glass-text {
+    color: rgba(255, 255, 255, 0.95) !important;
+    text-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3) !important;
+  }
+  
+  /* Waveform Color Update */
+  .waveform-canvas {
+    filter: brightness(1.2) contrast(1.1) !important;
+  }
 }

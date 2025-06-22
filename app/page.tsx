@@ -36,14 +36,14 @@ export default function Home() {
 
       <div className="grid gap-8 md:grid-cols-1 lg:grid-cols-[1fr_2fr]">
         <div className="space-y-6">
-          <div className="bg-card rounded-lg border shadow-sm p-6">
-            <h2 className="text-xl font-semibold mb-4">Upload Audio</h2>
+          <div className="bg-card rounded-lg border shadow-sm p-6 upload-panel">
+            <h2 className="text-xl font-semibold mb-4 glass-text">Upload Audio</h2>
             <AudioUploader />
           </div>
         </div>
 
-        <div className="bg-card rounded-lg border shadow-sm p-6">
-          <h2 className="text-xl font-semibold mb-4">Sheet Music</h2>
+        <div className="bg-card rounded-lg border shadow-sm p-6 sheet-music-panel">
+          <h2 className="text-xl font-semibold mb-4 glass-text">Sheet Music</h2>
           <SheetMusicDisplay />
         </div>
       </div>

@@ -300,7 +300,7 @@ export function AudioAnalyzer({ audioFile }: AudioAnalyzerProps) {
                 </div>
               )}
 
-              <Button onClick={analyzeAudio} disabled={isAnalyzing} className="w-full">
+              <Button onClick={analyzeAudio} disabled={isAnalyzing} className="w-full btn-analyze">
                 {isAnalyzing ? (
                   <>
                     <Music className="mr-2 h-4 w-4 animate-spin" />

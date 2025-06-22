@@ -277,7 +277,7 @@ export default function AudioUploader() {
             isDragOver 
               ? "border-primary bg-primary/5 scale-105" 
               : "border-muted-foreground/25 hover:border-primary/50 hover:bg-muted/50",
-            file && "border-green-500 bg-green-50 dark:bg-green-950/20"
+            file && "file-uploaded"
           )}
           onDragOver={handleDragOver}
           onDragLeave={handleDragLeave}
@@ -324,11 +324,11 @@ export default function AudioUploader() {
 
       {/* Mini Waveform Preview */}
       {audioData && (
-        <div className="p-4 border rounded-lg bg-card">
+        <div className="p-4 border rounded-lg bg-card waveform-player">
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">
               <Music className="h-4 w-4 text-primary" />
-              <span className="font-medium text-sm">{file?.name}</span>
+              <span className="font-medium text-sm glass-text">{file?.name}</span>
             </div>
             <div className="flex items-center gap-2">
               <span className="text-xs text-muted-foreground">
@@ -338,7 +338,7 @@ export default function AudioUploader() {
                 variant="outline"
                 size="sm"
                 onClick={togglePlayback}
-                className="h-8 w-8 p-0"
+                className="h-8 w-8 p-0 btn-secondary-glass"
               >
                 {isPlaying ? (
                   <Pause className="h-3 w-3" />
@@ -354,7 +354,7 @@ export default function AudioUploader() {
               ref={waveformRef}
               width={400}
               height={80}
-              className="w-full h-20 border rounded bg-background cursor-pointer"
+              className="w-full h-20 border rounded bg-background cursor-pointer waveform-canvas"
               style={{ minHeight: '80px' }}
             />
             
