@@ -5,7 +5,7 @@ import { SheetMusicDisplay } from "@/components/sheet-music-display"
 import { ThemeToggle } from "@/components/theme-toggle"
 
 export const metadata: Metadata = {
-  title: "PlAI: An Audio to Sheet Music Converter",
+  title: "PLAI: An Audio to Sheet Music Converter",
   description: "Convert audio files to piano sheet music",
 }
 
@@ -17,14 +17,14 @@ export default function Home() {
           <div className="flex justify-center mb-2">
             <Image
               src="/PlAI_logo.png"
-              alt="PlAI Logo"
+              alt="PLAI Logo"
               width={200}
               height={80}
               className="h-auto dark:invert block"
               priority
             />
           </div>
-          <h1 className="text-xl font-bold tracking-tight">PlAI: An Audio to Sheet Music Converter</h1>
+          <h1 className="text-xl font-bold tracking-tight">PLAI: An Audio to Sheet Music Converter</h1>
           <p className="text-muted-foreground max-w-2xl mx-auto mt-2">
             Upload an audio file of music and we'll convert it to piano sheet music that you can read, play, and download.
           </p>

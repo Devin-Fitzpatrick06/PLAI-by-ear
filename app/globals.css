@@ -14,7 +14,7 @@ body {
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
+    --background: 220 33% 98%;
     --foreground: 0 0% 3.9%;
     --card: 0 0% 100%;
     --card-foreground: 0 0% 3.9%;
@@ -90,6 +90,7 @@ body {
   }
   body {
     @apply bg-background text-foreground;
+    background-color: #F7F9FC !important;
   }
   
   /* Custom dark mode radial gradient */
@@ -108,17 +109,17 @@ body {
   .dark .bg-card {
     background-color: #1a1a1a !important;
     border: 1px solid #333333 !important;
-    box-shadow: 0px 8px 32px rgba(0, 0, 0, 0.3) !important;
+    box-shadow: 0px 8px 32px rgba(66, 81, 130, 0.15) !important;
   }
   
-  /* Liquid Glass Effect for Panels */
+  /* Liquid Glass Effect for Panels - Blue Tinted */
   .upload-panel,
   .sheet-music-panel {
-    background-color: rgba(35, 35, 35, 0.55) !important;
+    background-color: rgba(240, 244, 252, 0.7) !important;
     backdrop-filter: blur(25px) saturate(150%) !important;
     border-radius: 20px !important;
-    border: 1px solid rgba(255, 255, 255, 0.1) !important;
-    box-shadow: 0px 8px 32px rgba(0, 0, 0, 0.3) !important;
+    border: 1px solid rgba(200, 210, 230, 0.8) !important;
+    box-shadow: 0px 8px 32px rgba(66, 81, 130, 0.15) !important;
   }
   
   /* Waveform Player Glass Effect */
@@ -127,7 +128,7 @@ body {
     backdrop-filter: blur(25px) saturate(150%) !important;
     border-radius: 16px !important;
     border: 1px solid rgba(255, 255, 255, 0.1) !important;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25), 0 1px 4px rgba(0, 0, 0, 0.15) !important;
+    box-shadow: 0 4px 16px rgba(66, 81, 130, 0.12), 0 1px 4px rgba(66, 81, 130, 0.08) !important;
   }
   
   /* Additional nested card styling */
@@ -135,7 +136,7 @@ body {
     background-color: rgba(30, 30, 30, 0.5) !important;
     backdrop-filter: blur(20px) saturate(140%) !important;
     border: 1px solid rgba(255, 255, 255, 0.08) !important;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
+    box-shadow: 0 2px 8px rgba(66, 81, 130, 0.1) !important;
   }
   
   /* Primary Analyze Button - Apple Style */
@@ -147,12 +148,12 @@ body {
     padding: 12px 24px !important;
     font-weight: 600 !important;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+    box-shadow: 0 2px 8px rgba(66, 81, 130, 0.08) !important;
   }
   
   .btn-analyze:hover {
     background: linear-gradient(to bottom, #F8F8F8, #E8E8E8) !important;
-    box-shadow: 0 4px 16px rgba(255, 255, 255, 0.2), 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+    box-shadow: 0 4px 16px rgba(255, 255, 255, 0.2), 0 2px 8px rgba(66, 81, 130, 0.08) !important;
     transform: translateY(-1px) scale(1.03) !important;
   }
   
@@ -164,14 +165,14 @@ body {
     border-radius: 20px !important;
     backdrop-filter: blur(10px) !important;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
+    box-shadow: 0 2px 8px rgba(66, 81, 130, 0.1) !important;
   }
   
   .btn-secondary-glass:hover {
     background-color: rgba(60, 60, 60, 0.6) !important;
     border-color: rgba(255, 255, 255, 0.2) !important;
     transform: translateY(-1px) !important;
-    box-shadow: 0 0 15px rgba(70, 100, 255, 0.6), 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+    box-shadow: 0 0 15px rgba(70, 100, 255, 0.6), 0 4px 12px rgba(66, 81, 130, 0.15) !important;
   }
   
   /* General button transitions */
@@ -187,10 +188,10 @@ body {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
   }
   
-  /* File Upload Indicator - Green Glow */
+  /* File Upload Indicator - Blue Glow */
   .file-uploaded {
-    box-shadow: 0 0 20px rgba(34, 197, 94, 0.3) !important;
-    border: 1px solid rgba(34, 197, 94, 0.2) !important;
+    box-shadow: 0 0 20px rgba(70, 100, 255, 0.5) !important;
+    border: 1px solid rgba(70, 100, 255, 0.3) !important;
   }
   
   /* Typography Improvements */

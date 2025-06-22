@@ -8,7 +8,7 @@ import { Toaster } from "@/components/ui/toaster"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "PlAI: An Audio to Sheet Music Converter",
+  title: "PLAI: An Audio to Sheet Music Converter",
   description: "Convert audio files to piano sheet music",
     generator: 'v0.dev'
 }

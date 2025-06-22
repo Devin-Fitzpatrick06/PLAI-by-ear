@@ -22,6 +22,7 @@ export default function AudioUploader() {
   const fileInputRef = useRef<HTMLInputElement>(null)
   const waveformRef = useRef<HTMLCanvasElement>(null)
   const audioSourceRef = useRef<AudioBufferSourceNode | null>(null)
+  const timeUpdateRef = useRef<number | null>(null)
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0]
@@ -81,52 +82,133 @@ export default function AudioUploader() {
     // Set canvas size to match display size
     const rect = canvas.getBoundingClientRect()
     canvas.width = rect.width || 400
-    canvas.height = rect.height || 80
+    canvas.height = rect.height || 40
 
     const width = canvas.width
     const height = canvas.height
 
-    console.log("Drawing waveform:", { width, height, dataLength: channelData.length })
+    console.log("Drawing playback line:", { width, height, currentTime, duration })
 
     ctx.clearRect(0, 0, width, height)
     
-    // Create gradient background with proper color values
+    // Create gradient background
     const gradient = ctx.createLinearGradient(0, 0, 0, height)
-    gradient.addColorStop(0, "rgba(59, 130, 246, 0.1)") // blue-500 with opacity
-    gradient.addColorStop(1, "rgba(59, 130, 246, 0.05)") // blue-500 with lower opacity
+    gradient.addColorStop(0, "rgba(59, 130, 246, 0.1)")
+    gradient.addColorStop(1, "rgba(59, 130, 246, 0.05)")
     ctx.fillStyle = gradient
     ctx.fillRect(0, 0, width, height)
 
-    // Draw waveform with proper color
-    ctx.strokeStyle = "#3b82f6" // blue-500
-    ctx.lineWidth = 1.5
+    // Draw progress bar background
+    ctx.fillStyle = "rgba(59, 130, 246, 0.2)"
+    ctx.fillRect(0, height / 2 - 2, width, 4)
 
-    ctx.beginPath()
-    
-    // Use fewer points for better performance and visibility
-    const numPoints = Math.min(500, channelData.length)
-    const step = Math.floor(channelData.length / numPoints)
-    const sliceWidth = width / numPoints
-    
-    let x = 0
-    let hasDrawn = false
-
-    for (let i = 0; i < channelData.length && x < width; i += step) {
-      const v = channelData[i] * 0.6 // Reduce amplitude for better visibility
-      const y = ((v + 1) * height) / 2
-
-      if (!hasDrawn) {
-        ctx.moveTo(x, y)
-        hasDrawn = true
-      } else {
-        ctx.lineTo(x, y)
-      }
-
-      x += sliceWidth
+    // Draw progress line
+    if (duration > 0) {
+      const progress = currentTime / duration
+      const progressWidth = progress * width
+      
+      // Draw played portion
+      ctx.fillStyle = "#3b82f6"
+      ctx.fillRect(0, height / 2 - 2, progressWidth, 4)
+      
+      // Draw playhead
+      ctx.fillStyle = "#ffffff"
+      ctx.fillRect(progressWidth - 2, height / 2 - 4, 4, 8)
     }
 
-    ctx.stroke()
-    console.log("Waveform drawn")
+    console.log("Playback line drawn")
+  }
+
+  const handleCanvasClick = (e: React.MouseEvent<HTMLCanvasElement>) => {
+    console.log("Canvas clicked!")
+    
+    if (!duration || !audioContext || !audioBuffer) {
+      console.log("Missing required audio data:", { duration, audioContext: !!audioContext, audioBuffer: !!audioBuffer })
+      return
+    }
+
+    const canvas = waveformRef.current
+    if (!canvas) {
+      console.log("Canvas not found")
+      return
+    }
+
+    const rect = canvas.getBoundingClientRect()
+    const clickX = e.clientX - rect.left
+    const clickPercentage = clickX / rect.width
+    const newTime = Math.max(0, Math.min(duration, clickPercentage * duration))
+
+    console.log("Scrubbing:", { 
+      clickX, 
+      rectWidth: rect.width, 
+      clickPercentage, 
+      newTime, 
+      currentTime, 
+      isPlaying 
+    })
+
+    // Cancel any existing time tracking
+    if (timeUpdateRef.current) {
+      cancelAnimationFrame(timeUpdateRef.current)
+      timeUpdateRef.current = null
+    }
+
+    // Update current time immediately
+    setCurrentTime(newTime)
+
+    // If playing, restart playback from new position
+    if (isPlaying) {
+      console.log("Restarting playback from:", newTime)
+      
+      // Stop current playback
+      if (audioSourceRef.current) {
+        audioSourceRef.current.stop()
+        audioSourceRef.current = null
+      }
+
+      // Start new playback from the clicked position
+      const source = audioContext.createBufferSource()
+      source.buffer = audioBuffer
+      source.connect(audioContext.destination)
+      
+      if (audioContext.state === 'suspended') {
+        audioContext.resume()
+      }
+      
+      source.start(0, newTime)
+      source.onended = () => {
+        console.log("Audio ended")
+        setIsPlaying(false)
+        setCurrentTime(0)
+        if (timeUpdateRef.current) {
+          cancelAnimationFrame(timeUpdateRef.current)
+          timeUpdateRef.current = null
+        }
+      }
+      
+      audioSourceRef.current = source
+      
+      // Start time tracking from the new position
+      const startTime = audioContext.currentTime
+      const updateTime = () => {
+        if (audioSourceRef.current && audioSourceRef.current.buffer) {
+          const elapsed = audioContext.currentTime - startTime
+          const currentAudioTime = newTime + elapsed
+          
+          if (currentAudioTime < duration) {
+            setCurrentTime(currentAudioTime)
+            timeUpdateRef.current = requestAnimationFrame(updateTime)
+          } else {
+            setIsPlaying(false)
+            setCurrentTime(0)
+            timeUpdateRef.current = null
+          }
+        }
+      }
+      timeUpdateRef.current = requestAnimationFrame(updateTime)
+    } else {
+      console.log("Audio paused, just updating position")
+    }
   }
 
   const togglePlayback = () => {
@@ -137,6 +219,10 @@ export default function AudioUploader() {
       if (audioSourceRef.current) {
         audioSourceRef.current.stop()
         audioSourceRef.current = null
+      }
+      if (timeUpdateRef.current) {
+        cancelAnimationFrame(timeUpdateRef.current)
+        timeUpdateRef.current = null
       }
       setIsPlaying(false)
     } else {
@@ -154,6 +240,10 @@ export default function AudioUploader() {
       source.onended = () => {
         setIsPlaying(false)
         setCurrentTime(0)
+        if (timeUpdateRef.current) {
+          cancelAnimationFrame(timeUpdateRef.current)
+          timeUpdateRef.current = null
+        }
       }
       
       audioSourceRef.current = source
@@ -166,14 +256,15 @@ export default function AudioUploader() {
           const newTime = audioContext.currentTime - startTime
           if (newTime < duration) {
             setCurrentTime(newTime)
-            requestAnimationFrame(updateTime)
+            timeUpdateRef.current = requestAnimationFrame(updateTime)
           } else {
             setIsPlaying(false)
             setCurrentTime(0)
+            timeUpdateRef.current = null
           }
         }
       }
-      requestAnimationFrame(updateTime)
+      timeUpdateRef.current = requestAnimationFrame(updateTime)
     }
   }
 
@@ -211,7 +302,6 @@ export default function AudioUploader() {
     // Stop any ongoing playback
     if (audioSourceRef.current) {
       audioSourceRef.current.stop()
-      audioSourceRef.current = null
     }
     if (isPlaying) {
       setIsPlaying(false)
@@ -243,7 +333,7 @@ export default function AudioUploader() {
     }
   }, [audioContext])
 
-  // Redraw waveform when audioData changes
+  // Redraw playback line when audioData or currentTime changes
   useEffect(() => {
     if (audioData && waveformRef.current) {
       // Small delay to ensure canvas is rendered
@@ -253,7 +343,7 @@ export default function AudioUploader() {
       
       return () => clearTimeout(timer)
     }
-  }, [audioData])
+  }, [audioData, currentTime])
 
   return (
     <div className="space-y-4">
@@ -356,6 +446,7 @@ export default function AudioUploader() {
               height={80}
               className="w-full h-20 border rounded bg-background cursor-pointer waveform-canvas"
               style={{ minHeight: '80px' }}
+              onClick={handleCanvasClick}
             />
             
             {/* Playhead indicator */}
