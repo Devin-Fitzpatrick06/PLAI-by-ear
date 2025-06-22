@@ -73,13 +73,6 @@ export function SheetMusicDisplay() {
     if (!vexFlowLoaded || !window.Vex) {
       container.innerHTML = `
         <div class="p-4 bg-muted rounded-md">
-          <h3 class="text-lg font-semibold mb-2">${musicData.title}</h3>
-          <div class="grid grid-cols-2 gap-4 mb-4 text-sm">
-            <div><strong>Time Signature:</strong> ${musicData.timeSignature}</div>
-            <div><strong>Key:</strong> ${musicData.keySignature}</div>
-            <div><strong>Tempo:</strong> ${musicData.tempo} BPM</div>
-            <div><strong>Notes:</strong> ${musicData.notes.length}</div>
-          </div>
           <div class="p-4 bg-background rounded border">
             <p class="text-center mb-2">Loading VexFlow for sheet music rendering...</p>
           </div>
@@ -92,33 +85,16 @@ export function SheetMusicDisplay() {
       // Create VexFlow renderer
       const { Renderer, Stave, StaveNote, Voice, Formatter, Accidental } = window.Vex.Flow
 
-      // Add title and info
-      const infoDiv = document.createElement("div")
-      infoDiv.className = "p-4 bg-muted rounded-md mb-4"
+      // Create SVG renderer
+      const div = document.createElement("div")
+      div.className = "vexflow-container bg-gray-50 p-4 rounded-md border"
+      container.appendChild(div)
 
       // Calculate pagination info
       const notesPerPage = 32 // 8 measures × 4 notes per measure
       const totalPages = Math.ceil(musicData.notes.length / notesPerPage)
       const startNote = currentPage * notesPerPage
       const endNote = Math.min(startNote + notesPerPage, musicData.notes.length)
-
-      infoDiv.innerHTML = `
-        <h3 class="text-lg font-semibold mb-2">${musicData.title}</h3>
-        <div class="grid grid-cols-3 gap-4 mb-2 text-sm">
-          <div><strong>Time Signature:</strong> ${musicData.timeSignature}</div>
-          <div><strong>Key:</strong> ${musicData.keySignature}</div>
-          <div><strong>Tempo:</strong> ${musicData.tempo} BPM</div>
-          <div><strong>Total Notes:</strong> ${musicData.notes.length}</div>
-          <div><strong>Page:</strong> ${currentPage + 1} of ${totalPages}</div>
-          <div><strong>Showing:</strong> Notes ${startNote + 1}-${endNote}</div>
-        </div>
-      `
-      container.appendChild(infoDiv)
-
-      // Create SVG renderer
-      const div = document.createElement("div")
-      div.className = "vexflow-container bg-gray-50 p-4 rounded-md border"
-      container.appendChild(div)
 
       // Get notes for current page
       const pageNotes = musicData.notes.slice(startNote, endNote)
@@ -710,6 +686,38 @@ export function SheetMusicDisplay() {
 
   return (
     <div className="space-y-4">
+      {/* Buttons moved to top */}
+      <div className="flex flex-wrap gap-2">
+        <Button variant="outline" onClick={handlePlayback} disabled={!sheetMusic || isLoading} className="flex-1">
+          {isPlaying ? (
+            <>
+              <Pause className="mr-2 h-4 w-4" />
+              Stop Playback
+            </>
+          ) : (
+            <>
+              <Play className="mr-2 h-4 w-4" />
+              Play Current Page
+            </>
+          )}
+        </Button>
+
+        <Button variant="outline" onClick={testHTML5Audio} className="flex-1">
+          <Play className="mr-2 h-4 w-4" />
+          Test HTML5 Audio
+        </Button>
+
+        <Button variant="outline" onClick={handleDownload} disabled={!sheetMusic || isLoading} className="flex-1">
+          <Download className="mr-2 h-4 w-4" />
+          Download Page
+        </Button>
+
+        <Button variant="outline" onClick={handleReset} disabled={!sheetMusic || isLoading} className="flex-1">
+          <RotateCcw className="mr-2 h-4 w-4" />
+          Reset
+        </Button>
+      </div>
+
       <div ref={vexflowContainerRef} className="min-h-[400px] border rounded-md p-4 bg-background overflow-x-auto">
         {isLoading ? (
           <div className="flex items-center justify-center h-full">
@@ -754,36 +762,22 @@ export function SheetMusicDisplay() {
         </div>
       )}
 
-      <div className="flex flex-wrap gap-2">
-        <Button variant="outline" onClick={handlePlayback} disabled={!sheetMusic || isLoading} className="flex-1">
-          {isPlaying ? (
-            <>
-              <Pause className="mr-2 h-4 w-4" />
-              Stop Playback
-            </>
-          ) : (
-            <>
-              <Play className="mr-2 h-4 w-4" />
-              Play Current Page
-            </>
-          )}
-        </Button>
-
-        <Button variant="outline" onClick={testHTML5Audio} className="flex-1">
-          <Play className="mr-2 h-4 w-4" />
-          Test HTML5 Audio
-        </Button>
-
-        <Button variant="outline" onClick={handleDownload} disabled={!sheetMusic || isLoading} className="flex-1">
-          <Download className="mr-2 h-4 w-4" />
-          Download Page
-        </Button>
-
-        <Button variant="outline" onClick={handleReset} disabled={!sheetMusic || isLoading} className="flex-1">
-          <RotateCcw className="mr-2 h-4 w-4" />
-          Reset
-        </Button>
-      </div>
+      {/* Music Information */}
+      {sheetMusic && (
+        <div className="p-4 border rounded-lg bg-muted/50">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-sm">
+            <div className="col-span-2 md:col-span-3">
+              <h3 className="font-semibold text-lg mb-2">{sheetMusic.title || "Piano Scale and Chord Analysis"}</h3>
+            </div>
+            <div><strong>Time Signature:</strong> {sheetMusic.timeSignature || "4/4"}</div>
+            <div><strong>Key:</strong> {sheetMusic.keySignature || "C"}</div>
+            <div><strong>Tempo:</strong> {sheetMusic.tempo || 120} BPM</div>
+            <div><strong>Total Notes:</strong> {sheetMusic.notes?.length || 0}</div>
+            <div><strong>Page:</strong> {currentPage + 1} of {totalPages || 1}</div>
+            <div><strong>Showing:</strong> Notes {Math.min(currentPage * notesPerPage + 1, sheetMusic.notes?.length || 0)}-{Math.min((currentPage + 1) * notesPerPage, sheetMusic.notes?.length || 0)}</div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

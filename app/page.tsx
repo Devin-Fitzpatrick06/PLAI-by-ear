@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import Image from "next/image"
 import AudioUploader from "@/components/audio-uploader"
 import { SheetMusicDisplay } from "@/components/sheet-music-display"
 import { ThemeToggle } from "@/components/theme-toggle"
@@ -10,15 +11,25 @@ export const metadata: Metadata = {
 
 export default function Home() {
   return (
-    <div className="container mx-auto py-10 space-y-10">
-      <div className="flex justify-between items-start">
-        <div className="text-center space-y-4 flex-1">
-          <h1 className="text-4xl font-bold tracking-tight">PlAI by Ear: An Audio to Sheet Music Converter</h1>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
+    <div className="container mx-auto py-4 space-y-6">
+      <div className="relative">
+        <div className="text-center">
+          <div className="flex justify-center mb-2">
+            <Image
+              src="/PlAI_logo.png"
+              alt="PlAI by Ear Logo"
+              width={200}
+              height={80}
+              className="h-auto dark:invert block"
+              priority
+            />
+          </div>
+          <h1 className="text-xl font-bold tracking-tight">PlAI: An Audio to Sheet Music Converter</h1>
+          <p className="text-muted-foreground max-w-2xl mx-auto mt-2">
             Upload an audio file of music and we'll convert it to piano sheet music that you can read, play, and download.
           </p>
         </div>
-        <div className="ml-4">
+        <div className="absolute top-0 right-0">
           <ThemeToggle />
         </div>
       </div>

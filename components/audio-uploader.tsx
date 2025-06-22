@@ -344,7 +344,7 @@ export default function AudioUploader() {
         <p>Supported formats: MP3, WAV, OGG, FLAC, M4A</p>
         <p>Maximum file size: 10MB</p>
         <p>
-          <strong>Note:</strong> This uses basic pitch detection. Results may vary based on audio quality and
+          <strong>Note:</strong> This uses basic pitch detection powered by Gemini 2.5 Pro. Results may vary based on audio quality and
           complexity.
         </p>
       </div>

@@ -292,10 +292,10 @@ export function AudioAnalyzer({ audioFile }: AudioAnalyzerProps) {
                 <div className="space-y-2">
                   <Progress value={progress} className="w-full" />
                   <p className="text-sm text-muted-foreground">
-                    {progress < 30 && "Preparing audio for Gemini 2.5 Pro analysis..."}
-                    {progress >= 30 && progress < 50 && "Uploading to Google's most advanced AI..."}
-                    {progress >= 50 && progress < 80 && "Gemini 2.5 Pro analyzing musical content..."}
-                    {progress >= 80 && "Processing advanced AI transcription results..."}
+                    {progress < 30 && "Preparing..."}
+                    {progress >= 30 && progress < 50 && "Uploading..."}
+                    {progress >= 50 && progress < 80 && "Analyzing..."}
+                    {progress >= 80 && "Processing results..."}
                   </p>
                 </div>
               )}
@@ -303,103 +303,18 @@ export function AudioAnalyzer({ audioFile }: AudioAnalyzerProps) {
               <Button onClick={analyzeAudio} disabled={isAnalyzing} className="w-full">
                 {isAnalyzing ? (
                   <>
-                    <Crown className="mr-2 h-4 w-4 animate-spin" />
-                    Analyzing with Gemini 2.5 Pro...
+                    <Music className="mr-2 h-4 w-4 animate-spin" />
+                    Analyzing...
                   </>
                 ) : (
                   <>
                     <Music className="mr-2 h-4 w-4" />
-                    Analyze with Gemini 2.5 Pro
+                    Analyze
                   </>
                 )}
               </Button>
             </div>
           </div>
-
-          {analysisResult && (
-            <div className="p-4 border rounded-lg bg-gradient-to-br from-purple-50 to-blue-50 dark:from-purple-950/20 dark:to-blue-950/20">
-              <h4 className="font-semibold mb-3 flex items-center gap-2">
-                <Info className="h-4 w-4" />
-                Advanced AI Analysis Results
-                <Badge variant="outline" className="border-purple-200">
-                  {analysisResult.modelUsed?.includes("2.5") ? (
-                    <Crown className="h-3 w-3 mr-1" />
-                  ) : (
-                    <Brain className="h-3 w-3 mr-1" />
-                  )}
-                  {analysisResult.modelUsed || "Gemini AI"}
-                </Badge>
-              </h4>
-
-              <div className="grid grid-cols-2 gap-4 mb-4 text-sm">
-                <div>
-                  <strong>Detected Instrument:</strong> {analysisResult.analysis?.instrument || "Unknown"}
-                </div>
-                <div>
-                  <strong>Musical Complexity:</strong>{" "}
-                  <Badge variant={analysisResult.analysis?.complexity === "simple" ? "default" : "secondary"}>
-                    {analysisResult.analysis?.complexity || "Unknown"}
-                  </Badge>
-                </div>
-                <div>
-                  <strong>Audio Quality:</strong> {analysisResult.analysis?.quality || "Unknown"}
-                </div>
-                <div>
-                  <strong>AI-Detected Notes:</strong> {analysisResult.notes?.length || 0}
-                </div>
-                <div>
-                  <strong>Key Detected:</strong> {analysisResult.analysis?.keyDetected || "Unknown"}
-                </div>
-                <div>
-                  <strong>Tempo Detected:</strong> {analysisResult.analysis?.tempoDetected || "Unknown"} BPM
-                </div>
-                <div>
-                  <strong>Musical Style:</strong> {analysisResult.analysis?.musicalStyle || "Unknown"}
-                </div>
-                <div>
-                  <strong>Dynamic Range:</strong> {analysisResult.analysis?.dynamicRange || "Unknown"}
-                </div>
-              </div>
-
-              {analysisResult.processingInfo && (
-                <div className="p-3 bg-purple-50 dark:bg-purple-950/20 rounded border mb-4">
-                  <strong className="text-sm flex items-center gap-1">
-                    <Crown className="h-3 w-3" />
-                    Gemini 2.5 Pro Processing Details:
-                  </strong>
-                  <div className="text-xs text-muted-foreground mt-1 space-y-1">
-                    <div>Original notes detected: {analysisResult.processingInfo.originalNotesCount}</div>
-                    <div>High-confidence notes kept: {analysisResult.processingInfo.filteredNotesCount}</div>
-                    <div>Confidence threshold: {analysisResult.processingInfo.confidenceThreshold * 100}%</div>
-                    <div>Analysis method: {analysisResult.processingInfo.analysisMethod}</div>
-                    <div>Model used: {analysisResult.modelUsed}</div>
-                    {analysisResult.processingInfo.modelFallback && (
-                      <div className="text-yellow-600 dark:text-yellow-400">
-                        ⚠️ Fallback model used (Gemini 2.5 Pro may not be available)
-                      </div>
-                    )}
-                  </div>
-                </div>
-              )}
-
-              {analysisResult.analysis?.recommendations && (
-                <div className="p-3 bg-background rounded border">
-                  <strong className="text-sm">AI Recommendations:</strong>
-                  <p className="text-sm text-muted-foreground mt-1">{analysisResult.analysis.recommendations}</p>
-                </div>
-              )}
-            </div>
-          )}
-
-          {audioData && (
-            <div className="p-4 border rounded-lg">
-              <h4 className="font-semibold mb-2">Audio Waveform</h4>
-              <canvas ref={canvasRef} width={600} height={200} className="w-full border rounded bg-background" />
-              <p className="text-xs text-muted-foreground mt-2">
-                Waveform visualization ({(audioData.length / 44100).toFixed(1)} seconds total)
-              </p>
-            </div>
-          )}
         </div>
       )}
     </div>
