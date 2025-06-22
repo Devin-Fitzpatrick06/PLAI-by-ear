@@ -94,13 +94,13 @@ body {
   
   /* Custom dark mode radial gradient */
   .dark body {
-    background: radial-gradient(circle at center, #151515 0%, #0d0d0d 50%, #050505 100%) !important;
+    background: radial-gradient(ellipse at center, #1b2735 0%, #090a0f 100%) !important;
     background-attachment: fixed !important;
   }
   
   /* Also apply to the main container */
   .dark .bg-background {
-    background: radial-gradient(circle at center, #151515 0%, #0d0d0d 50%, #050505 100%) !important;
+    background: radial-gradient(ellipse at center, #1b2735 0%, #090a0f 100%) !important;
     background-attachment: fixed !important;
   }
   
@@ -108,24 +108,34 @@ body {
   .dark .bg-card {
     background-color: #1a1a1a !important;
     border: 1px solid #333333 !important;
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 1px 3px rgba(0, 0, 0, 0.3) !important;
+    box-shadow: 0px 8px 32px rgba(0, 0, 0, 0.3) !important;
   }
   
   /* Liquid Glass Effect for Panels */
   .upload-panel,
   .sheet-music-panel {
-    background-color: rgba(35, 35, 35, 0.6) !important;
-    backdrop-filter: blur(25px) !important;
+    background-color: rgba(35, 35, 35, 0.55) !important;
+    backdrop-filter: blur(25px) saturate(150%) !important;
     border-radius: 20px !important;
-    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    box-shadow: 0px 8px 32px rgba(0, 0, 0, 0.3) !important;
   }
   
   /* Waveform Player Glass Effect */
   .waveform-player {
-    background-color: rgba(40, 40, 40, 0.7) !important;
-    backdrop-filter: blur(20px) !important;
+    background-color: rgba(35, 35, 35, 0.55) !important;
+    backdrop-filter: blur(25px) saturate(150%) !important;
     border-radius: 16px !important;
     border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25), 0 1px 4px rgba(0, 0, 0, 0.15) !important;
+  }
+  
+  /* Additional nested card styling */
+  .bg-card {
+    background-color: rgba(30, 30, 30, 0.5) !important;
+    backdrop-filter: blur(20px) saturate(140%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
   }
   
   /* Primary Analyze Button - Apple Style */
@@ -136,30 +146,45 @@ body {
     border-radius: 25px !important;
     padding: 12px 24px !important;
     font-weight: 600 !important;
-    transition: all 0.3s ease !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
   }
   
   .btn-analyze:hover {
     background: linear-gradient(to bottom, #F8F8F8, #E8E8E8) !important;
     box-shadow: 0 4px 16px rgba(255, 255, 255, 0.2), 0 2px 8px rgba(0, 0, 0, 0.1) !important;
-    transform: translateY(-1px) !important;
+    transform: translateY(-1px) scale(1.03) !important;
   }
   
   /* Secondary Glassy Buttons */
   .btn-secondary-glass {
-    background-color: rgba(120, 120, 128, 0.25) !important;
+    background-color: rgba(50, 50, 50, 0.5) !important;
     color: rgba(255, 255, 255, 0.9) !important;
     border: 1px solid rgba(255, 255, 255, 0.1) !important;
     border-radius: 20px !important;
     backdrop-filter: blur(10px) !important;
-    transition: all 0.3s ease !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
   }
   
   .btn-secondary-glass:hover {
-    background-color: rgba(120, 120, 128, 0.4) !important;
+    background-color: rgba(60, 60, 60, 0.6) !important;
     border-color: rgba(255, 255, 255, 0.2) !important;
     transform: translateY(-1px) !important;
+    box-shadow: 0 0 15px rgba(70, 100, 255, 0.6), 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+  }
+  
+  /* General button transitions */
+  button {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  }
+  
+  /* Interactive elements transitions */
+  .upload-panel,
+  .sheet-music-panel,
+  .waveform-player,
+  .bg-card {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
   }
   
   /* File Upload Indicator - Green Glow */
@@ -178,8 +203,13 @@ body {
     text-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3) !important;
   }
   
-  /* Waveform Color Update */
+  /* Waveform Canvas - Keep vibrant blue line */
   .waveform-canvas {
     filter: brightness(1.2) contrast(1.1) !important;
+  }
+  
+  /* Ensure waveform line stays vibrant blue */
+  canvas {
+    background-color: transparent !important;
   }
 }
