@@ -91,4 +91,23 @@ body {
   body {
     @apply bg-background text-foreground;
   }
+  
+  /* Custom dark mode radial gradient */
+  .dark body {
+    background: radial-gradient(circle at center, #151515 0%, #0d0d0d 50%, #050505 100%) !important;
+    background-attachment: fixed !important;
+  }
+  
+  /* Also apply to the main container */
+  .dark .bg-background {
+    background: radial-gradient(circle at center, #151515 0%, #0d0d0d 50%, #050505 100%) !important;
+    background-attachment: fixed !important;
+  }
+  
+  /* Custom card styling for dark mode */
+  .dark .bg-card {
+    background-color: #1a1a1a !important;
+    border: 1px solid #333333 !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 1px 3px rgba(0, 0, 0, 0.3) !important;
+  }
 }

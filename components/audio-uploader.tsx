@@ -3,7 +3,7 @@
 import type React from "react"
 
 import { useState, useRef, useEffect } from "react"
-import { Music, Upload, FileAudio, Play, Pause } from "lucide-react"
+import { Music, Upload, FileAudio, Play, Pause, X } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { AudioAnalyzer } from "@/components/audio-analyzer"
@@ -207,6 +207,30 @@ export default function AudioUploader() {
     fileInputRef.current?.click()
   }
 
+  const removeFile = () => {
+    // Stop any ongoing playback
+    if (audioSourceRef.current) {
+      audioSourceRef.current.stop()
+      audioSourceRef.current = null
+    }
+    if (isPlaying) {
+      setIsPlaying(false)
+    }
+    
+    // Clear all state
+    setFile(null)
+    setAudioData(null)
+    setAudioBuffer(null)
+    setAudioContext(null)
+    setCurrentTime(0)
+    setDuration(0)
+    
+    // Clear the file input
+    if (fileInputRef.current) {
+      fileInputRef.current.value = ''
+    }
+  }
+
   // Cleanup on unmount
   useEffect(() => {
     return () => {
@@ -263,7 +287,20 @@ export default function AudioUploader() {
           <div className="flex flex-col items-center gap-2">
             {file ? (
               <>
-                <FileAudio className="h-8 w-8 text-green-600" />
+                <div className="flex items-center gap-2">
+                  <FileAudio className="h-8 w-8 text-green-600" />
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      removeFile()
+                    }}
+                    className="h-6 w-6 p-0 text-destructive hover:text-destructive"
+                  >
+                    <X className="h-3 w-3" />
+                  </Button>
+                </div>
                 <div className="text-sm">
                   <p className="font-medium text-green-700 dark:text-green-300">{file.name}</p>
                   <p className="text-muted-foreground">{(file.size / 1024 / 1024).toFixed(2)} MB</p>

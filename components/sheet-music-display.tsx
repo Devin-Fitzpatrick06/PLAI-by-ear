@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
-import { Download, Play, Pause, RotateCcw, ChevronLeft, ChevronRight } from "lucide-react"
+import { Download, Play, Pause, RotateCcw, ChevronLeft, ChevronRight, Music } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useToast } from "@/hooks/use-toast"
 import { useSheetMusicStore } from "@/lib/store"
@@ -65,8 +65,19 @@ export function SheetMusicDisplay() {
     container.innerHTML = ""
 
     if (!musicData || !musicData.notes || musicData.notes.length === 0) {
-      container.innerHTML =
-        "<div class='text-center py-10 text-muted-foreground'>No sheet music to display. Upload an audio file to get started.</div>"
+      container.innerHTML = `
+        <div class='text-center py-16 text-muted-foreground'>
+          <div class='flex justify-center mb-4'>
+            <svg class='w-16 h-16 opacity-20' fill='currentColor' viewBox='0 0 24 24'>
+              <path d='M9 18V5l12-2v13'/>
+              <circle cx='6' cy='18' r='3'/>
+              <circle cx='18' cy='16' r='3'/>
+            </svg>
+          </div>
+          <p class='text-lg font-medium mb-2'>Ready for Music</p>
+          <p class='text-sm opacity-70'>Upload an audio file to convert it to beautiful sheet music</p>
+        </div>
+      `
       return
     }
 
@@ -675,8 +686,19 @@ export function SheetMusicDisplay() {
     setCurrentPage(0)
 
     if (vexflowContainerRef.current) {
-      vexflowContainerRef.current.innerHTML =
-        "<div class='text-center py-10 text-muted-foreground'>No sheet music to display. Upload an audio file to get started.</div>"
+      vexflowContainerRef.current.innerHTML = `
+        <div class='text-center py-16 text-muted-foreground'>
+          <div class='flex justify-center mb-4'>
+            <svg class='w-16 h-16 opacity-20' fill='currentColor' viewBox='0 0 24 24'>
+              <path d='M9 18V5l12-2v13'/>
+              <circle cx='6' cy='18' r='3'/>
+              <circle cx='18' cy='16' r='3'/>
+            </svg>
+          </div>
+          <p class='text-lg font-medium mb-2'>Ready for Music</p>
+          <p class='text-sm opacity-70'>Upload an audio file to convert it to beautiful sheet music</p>
+        </div>
+      `
     }
   }
 
@@ -702,11 +724,6 @@ export function SheetMusicDisplay() {
           )}
         </Button>
 
-        <Button variant="outline" onClick={testHTML5Audio} className="flex-1">
-          <Play className="mr-2 h-4 w-4" />
-          Test HTML5 Audio
-        </Button>
-
         <Button variant="outline" onClick={handleDownload} disabled={!sheetMusic || isLoading} className="flex-1">
           <Download className="mr-2 h-4 w-4" />
           Download Page
@@ -727,8 +744,12 @@ export function SheetMusicDisplay() {
             </div>
           </div>
         ) : (
-          <div className="text-center py-10 text-muted-foreground">
-            No sheet music to display. Upload an audio file to get started.
+          <div className="text-center py-16 text-muted-foreground">
+            <div className="flex justify-center mb-4">
+              <Music className="w-16 h-16 opacity-20" />
+            </div>
+            <p className="text-lg font-medium mb-2">Ready for Music</p>
+            <p className="text-sm opacity-70">Upload an audio file to convert it to beautiful sheet music</p>
           </div>
         )}
       </div>
