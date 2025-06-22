@@ -5,7 +5,7 @@ import { SheetMusicDisplay } from "@/components/sheet-music-display"
 import { ThemeToggle } from "@/components/theme-toggle"
 
 export const metadata: Metadata = {
-  title: "PlAI by Ear: An Audio to Sheet Music Converter",
+  title: "PlAI: An Audio to Sheet Music Converter",
   description: "Convert audio files to piano sheet music",
 }
 
@@ -17,7 +17,7 @@ export default function Home() {
           <div className="flex justify-center mb-2">
             <Image
               src="/PlAI_logo.png"
-              alt="PlAI by Ear Logo"
+              alt="PlAI Logo"
               width={200}
               height={80}
               className="h-auto dark:invert block"
