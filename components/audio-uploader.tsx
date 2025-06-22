@@ -162,7 +162,7 @@ export default function AudioUploader() {
       // Update current time
       const startTime = audioContext.currentTime - currentTime
       const updateTime = () => {
-        if (isPlaying) {
+        if (audioSourceRef.current && audioSourceRef.current.buffer) {
           const newTime = audioContext.currentTime - startTime
           if (newTime < duration) {
             setCurrentTime(newTime)
