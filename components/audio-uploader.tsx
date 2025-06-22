@@ -414,7 +414,7 @@ export default function AudioUploader() {
 
       {/* Mini Waveform Preview */}
       {audioData && (
-        <div className="p-4 border rounded-lg bg-card waveform-player">
+        <div className="p-4 waveform-player">
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">
               <Music className="h-4 w-4 text-primary" />
